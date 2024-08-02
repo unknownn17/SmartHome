@@ -1,0 +1,971 @@
+basePath: /
+definitions:
+  models.AddDeviceRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+  models.AddDeviceResponse:
+    properties:
+      color:
+        type: string
+      commands:
+        type: string
+      name:
+        type: string
+      status:
+        type: string
+      user:
+        type: string
+    type: object
+  models.Alarm:
+    properties:
+      alarm:
+        type: integer
+      color:
+        type: string
+      created_at:
+        type: string
+      curtain:
+        type: string
+      dname:
+        type: string
+      lamp:
+        type: string
+      remaining_time:
+        type: integer
+      status:
+        type: string
+    type: object
+  models.AllDevices:
+    properties:
+      color:
+        type: string
+      commands:
+        type: string
+      name:
+        type: string
+    type: object
+  models.DeleteDeviceResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  models.Door:
+    properties:
+      command:
+        type: string
+      created_at:
+        type: string
+      dname:
+        type: string
+      door:
+        type: string
+      remaining_time:
+        type: integer
+      status:
+        type: string
+      timer:
+        type: integer
+    type: object
+  models.ForbiddenError:
+    properties:
+      error:
+        type: string
+    type: object
+  models.GetDevicesResponse:
+    properties:
+      devices:
+        items:
+          $ref: '#/definitions/models.AddDeviceResponse'
+        type: array
+    type: object
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.LoginResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.LogoutResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.NotFound:
+    properties:
+      error:
+        type: string
+    type: object
+  models.RegistrationRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.RegistrationResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.Speaker:
+    properties:
+      add:
+        type: string
+      dname:
+        type: string
+      song:
+        type: string
+      turn:
+        type: string
+      volume:
+        type: string
+    type: object
+  models.SpeakerGet:
+    properties:
+      add:
+        type: string
+      dname:
+        type: string
+      song:
+        type: string
+      songid:
+        type: integer
+      turn:
+        type: string
+      volume:
+        type: integer
+    type: object
+  models.StandartError:
+    properties:
+      error:
+        type: string
+    type: object
+  models.UpdateRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.UserProfileResponse:
+    properties:
+      age:
+        type: integer
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      log_out_at:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  models.Vaccum:
+    properties:
+      created_at:
+        type: integer
+      dname:
+        type: string
+      location:
+        type: string
+      remaining_time:
+        type: integer
+      status:
+        type: string
+      timer:
+        type: integer
+      turn:
+        type: string
+    type: object
+  models.VerifyRequest:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+    type: object
+  models.VerifyResponse:
+    properties:
+      verify:
+        type: string
+    type: object
+host: localhost:7777
+info:
+  contact: {}
+  description: Smart Home Pool
+  title: SMART HOME
+  version: "1.0"
+paths:
+  /devices:
+    get:
+      description: user profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.AllDevices'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To see All available devices
+      tags:
+      - Devices
+  /devices/{device}:
+    delete:
+      consumes:
+      - application/json
+      description: user profile
+      parameters:
+      - description: user devices
+        in: path
+        name: device
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DeleteDeviceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To remove something from home
+      tags:
+      - Devices
+  /devices/{user}:
+    get:
+      consumes:
+      - application/json
+      description: user device
+      parameters:
+      - description: user devices
+        in: path
+        name: user
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetDevicesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To see user's device
+      tags:
+      - Devices
+  /devices/add:
+    post:
+      consumes:
+      - application/json
+      description: user home
+      parameters:
+      - description: AddDeviceRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddDeviceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.AllDevices'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To add a new thing
+      tags:
+      - Devices
+  /devices/alarm/{dname}:
+    get:
+      description: Commands
+      parameters:
+      - description: user devices
+        in: path
+        name: dname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Alarm'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To get information about alarm
+      tags:
+      - Devices
+  /devices/command/alarm:
+    put:
+      consumes:
+      - application/json
+      description: Commands
+      parameters:
+      - description: user devices
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Alarm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To give a command fo alarm
+      tags:
+      - Devices
+  /devices/command/door:
+    put:
+      consumes:
+      - application/json
+      description: Commands
+      parameters:
+      - description: user devices
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Door'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To give a command fo alarm
+      tags:
+      - Devices
+  /devices/command/speaker:
+    put:
+      consumes:
+      - application/json
+      description: Commands
+      parameters:
+      - description: user devices
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Speaker'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To give a command fo speaker
+      tags:
+      - Devices
+  /devices/command/vaccum:
+    put:
+      consumes:
+      - application/json
+      description: Commands
+      parameters:
+      - description: user devices
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Vaccum'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To give a command fo vaccum
+      tags:
+      - Devices
+  /devices/door/{dname}:
+    get:
+      description: Commands
+      parameters:
+      - description: user devices
+        in: path
+        name: dname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Door'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To get information about door
+      tags:
+      - Devices
+  /devices/speaker/{dname}:
+    get:
+      description: Commands
+      parameters:
+      - description: user devices
+        in: path
+        name: dname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SpeakerGet'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To get information about speaker
+      tags:
+      - Devices
+  /devices/vaccum/{dname}:
+    get:
+      description: Commands
+      parameters:
+      - description: user devices
+        in: path
+        name: dname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Vaccum'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To get information about vaccum
+      tags:
+      - Devices
+  /users/delete/{email}:
+    delete:
+      consumes:
+      - application/json
+      description: user profile
+      parameters:
+      - description: UserProfileRequest
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LogoutResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To delete a profile
+      tags:
+      - Users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: New User
+      parameters:
+      - description: LoginRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To LogIn
+      tags:
+      - Users
+  /users/logout/{email}:
+    put:
+      consumes:
+      - application/json
+      description: user profile
+      parameters:
+      - description: UserProfileRequest
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LogoutResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To logout
+      tags:
+      - Users
+  /users/profile/{email}:
+    get:
+      consumes:
+      - application/json
+      description: user profile
+      parameters:
+      - description: UserProfileRequest
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserProfileResponse'
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.UserProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To see profile
+      tags:
+      - Users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: New User
+      parameters:
+      - description: RegistrationRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegistrationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.RegistrationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To register
+      tags:
+      - Users
+  /users/update:
+    put:
+      consumes:
+      - application/json
+      description: user profile
+      parameters:
+      - description: UserProfileRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To Update a user
+      tags:
+      - Users
+  /users/verify:
+    post:
+      consumes:
+      - application/json
+      description: New User
+      parameters:
+      - description: VerifyRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.VerifyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.VerifyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.NotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartError'
+      security:
+      - BearerAuth: []
+      summary: To verify
+      tags:
+      - Users
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization/
+    type: apiKey
+swagger: "2.0"

@@ -1,0 +1,76 @@
+syntax="proto3";
+
+
+option go_package="/userproto";
+service User{
+    rpc Register(RegistrationRequest) returns (RegistrationResponse);
+    rpc LogIn(LoginRequest) returns (LoginResponse);
+    rpc Verify(VerifyRequest) returns(LoginResponse);
+    rpc UserProfile(UserProfileRequest) returns (UserProfileResponse);
+    rpc UpdateUser(UpdateRequest) returns (UserProfileResponse);
+    rpc Logout(LogoutRequest) returns(LogoutResponse);
+    rpc DeleteUser(LogoutRequest) returns (LogoutResponse);
+    rpc Find(CheckRequest) returns (CheckResponse);
+}
+message RegistrationRequest{
+    string username=2;
+    int32 age=3;
+    string email=4;
+    string password=5;
+}
+
+message RegistrationResponse{
+    string message=1;
+}
+
+message LoginRequest{
+    string email=1;
+    string password=2;
+}
+
+message LoginResponse{
+    string message=1;
+}
+
+message UserProfileRequest{
+    string email=1;
+}
+
+message UserProfileResponse{
+    int64 id=1;
+    string username=2;
+    int32 age=3;
+    string email=4;
+    string created_at=5;
+    string updated_at=6;
+    string log_out_at=7;
+}
+
+message UpdateRequest{
+    int64 id=1;
+    string username=2;
+    int32 age=3;
+    string email=4;
+    string password=5;    
+}
+
+message LogoutRequest{
+    string email=1;
+}
+
+message LogoutResponse{
+    string message=1;
+}
+
+message CheckRequest{
+    string email=1;
+}
+
+message CheckResponse{
+    bool check=1;
+}
+
+message VerifyRequest{
+    string email=1;
+    string code=2;
+}

@@ -1,0 +1,123 @@
+syntax="proto3";
+
+option go_package="/deviceproto";
+
+message AddDeviceRequest{
+    string name=1;
+    string email=2;
+}
+
+message AddDeviceResponse{
+    string user=1;
+    string name=2;
+    string commands=3;
+    string status=4;
+    string color=5;
+}
+
+message CommandRequest{
+    string name=1;
+    string command=2;
+}
+
+message CommandResponse{
+    string satus=1;
+}
+
+message DeleteDeviceRequest{
+    string name=1;
+}
+
+message DeleteDeviceResponse{
+    string status=1;
+}
+
+message GetdevicesRequest{
+    string user=1;
+}
+
+message GetdevicesResponse{
+    repeated AddDeviceResponse devices=1;
+}
+
+message SpeakerCommandRequest{
+    string volume_command=1;
+    string control=2;
+    string turn_command=3;
+    string add_song=4;
+    string dtype=5;
+}
+
+message GETDeviceRequest{
+    string device=1;
+}
+
+message SpeakerDeviceResponse{
+    string Turn=1;
+    int32 Volume=2; 
+	int32 SongId=3; 
+	string Song=4; 
+    string 	Dname=5;  
+}
+
+message SmartAlarm{
+    string lifting_curtain=1;
+    string light_command=2;
+    string light_color=3;
+    string 	Dname=4;
+    string status=5;
+    int32 setalarm=6;
+    int32 remaining_time=7;
+}
+message LockDoor{
+    string door=1;
+    string command=2;
+    string status=3;
+    string dname=4;
+    int32 time=5;
+    int32 remaining_time=6;
+}
+
+message VaccumCleanaer{
+    string turn_command=1;
+    string location=2;
+    int64 time=3;
+    int64 created_at=4;
+    int64 remaining_time=5;
+    string 	Dname=6;
+    string status=7;
+}
+
+message Notification{
+    string message=1;
+}
+
+message Deviceslist{}
+
+message Devicesl{
+    string name=1;
+    string commands=2;
+    string color=3;
+}
+
+message DevicesTop{
+    repeated Devicesl devices=1;
+}
+
+service Devices{
+    rpc AddDevice(AddDeviceRequest) returns(AddDeviceResponse);
+    rpc Commands(CommandRequest) returns(CommandResponse);
+    rpc ListDevices(Deviceslist) returns(DevicesTop);
+    rpc DeleteDevice(DeleteDeviceRequest) returns(DeleteDeviceResponse);
+    rpc GetDevices(GetdevicesRequest) returns (GetdevicesResponse);
+    rpc Speaker(SpeakerCommandRequest) returns(Notification);
+    rpc SpeakerGet(GETDeviceRequest) returns(SpeakerDeviceResponse);
+    rpc VaccumCleanerGet(GETDeviceRequest) returns(VaccumCleanaer);
+    rpc VaccumClenaer(VaccumCleanaer) returns(Notification);
+    rpc SmartAlarms(SmartAlarm) returns(Notification);
+    rpc SmartAlarmGet(GETDeviceRequest) returns(SmartAlarm);
+    rpc GetDoor(GETDeviceRequest) returns(LockDoor);
+    rpc Door(LockDoor) returns(Notification);
+}
+
+

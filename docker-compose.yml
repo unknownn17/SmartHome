@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-alpine
+    container_name: message-broker_container
+    ports:
+      - 5673:5672
+    volumes:
+      - /absolute/path/to/data/:/var/lib/rabbitmq
+      - /absolute/path/to/log/:/var/log/rabbitmq
+    restart: always
+    networks:
+      - mynetwork
+
+  redis:
+    container_name: redis_container
+    image: redis:latest
+    ports:
+      - "6378:6379"
+    networks:
+      - mynetwork
+
+  mongodb:
+    container_name: mongo_container
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    networks:
+      - mynetwork
+
+  userservice:
+    build: ./user
+    container_name: user_service_container
+    image: user_service_image
+    ports:
+      - "8082:8081"
+    depends_on:
+      -  mongodb
+    networks:
+      - mynetwork
+
+  deviceservice:
+    build: ./devices
+    container_name: device_service_container
+    image: device_service_image
+    ports:
+      - "8080:8081"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - mynetwork
+  api-gateway-service:
+    build: ./apigateway  
+    container_name: api_gateway_container
+    image: myapigateway_image  
+    ports:
+      - "9000:7777"
+    depends_on:
+      - userservice
+      - deviceservice
+      - redis
+      - rabbitmq
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  db-data1:

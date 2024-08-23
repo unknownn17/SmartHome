@@ -186,7 +186,7 @@ definitions:
   models.Vaccum:
     properties:
       created_at:
-        type: integer
+        type: string
       dname:
         type: string
       location:
@@ -212,7 +212,7 @@ definitions:
       verify:
         type: string
     type: object
-host: localhost:7777
+host: localhost:9000
 info:
   contact: {}
   description: Smart Home Pool

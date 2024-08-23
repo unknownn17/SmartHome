@@ -1470,7 +1470,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "created_at": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "dname": {
                     "type": "string"
@@ -1524,7 +1524,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:7777",
+	Host:             "localhost:9000",
 	BasePath:         "/",
 	Schemes:          []string{"http"},
 	Title:            "SMART HOME",

@@ -9,7 +9,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:7777",
+    "host": "localhost:9000",
     "basePath": "/",
     "paths": {
         "/devices": {
@@ -1467,7 +1467,7 @@
             "type": "object",
             "properties": {
                 "created_at": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "dname": {
                     "type": "string"
